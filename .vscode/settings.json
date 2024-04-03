@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "bpf.h": "c",
+        "types.h": "c",
+        "bpf_common.h": "c",
+        "filter.h": "c",
+        "libbpf.h": "c"
+    }
+}
