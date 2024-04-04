@@ -1,9 +1,5 @@
-#include <uapi/linux/bpf.h>
+#include <vmlinux.h>
 #define SEC(NAME) __attribute__((section(NAME), used))
-
-/*
-    编译命令：clang -O2 -v -target bpf -I /usr/src/linux-headers-$(uname -r)/include -c bpf_hello_world_kern.c -o bpf_hello_world_kern
-*/
 
 static int (*trace_printk)(const char *fmt, u32 fmt_size, ...) = (void *)BPF_FUNC_trace_printk;
 

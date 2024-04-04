@@ -4,12 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/src/linux-headers-5.15.0-101-generic/include",
-                "/usr/src/linux-headers-5.15.0-101-generic/arch/x86/include/generated",
-                // "/home/yoaz/projects/linux-5.15.153/include",
-                "/usr/src/linux-headers-5.15.0-101/arch/x86/include",
-                // "/home/yoaz/projects/linux-5.15.153/tools/include",
-                "/home/yoaz/projects/linux-5.15.153/tools/lib"
+                "/home/yoaz/projects/linux-headers/include",
+                "/home/yoaz/projects/libbpf/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

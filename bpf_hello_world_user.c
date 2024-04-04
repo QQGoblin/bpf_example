@@ -2,77 +2,74 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <bpf/libbpf.h>
-#include <uapi/linux/bpf.h>
 
 #define DEBUGFS "/sys/kernel/debug/tracing/"
 
-/*
-    编译命令：clang -v -o bpf_hello_world_user \
-    -I /usr/src/linux-headers-$(uname -r)/include \
-    -I /usr/src/linux-headers-$(uname -r)/arch/x86/include/ \
-    -I /home/yoaz/projects/linux-5.15.153/tools/lib \
-    bpf_hello_world_user.c 
-*/
-
 void read_trace_pipe(void)
 {
-	int trace_fd;
+    int trace_fd;
 
-	trace_fd = open(DEBUGFS "trace_pipe", O_RDONLY, 0);
-	if (trace_fd < 0)
-		return;
+    trace_fd = open(DEBUGFS "trace_pipe", O_RDONLY, 0);
+    if (trace_fd < 0)
+        return;
 
-	while (1) {
-		static char buf[4096];
-		ssize_t sz;
+    while (1)
+    {
+        static char buf[4096];
+        ssize_t sz;
 
-		sz = read(trace_fd, buf, sizeof(buf) - 1);
-		if (sz > 0) {
-			buf[sz] = 0;
-			puts(buf);
-		}
-	}
+        sz = read(trace_fd, buf, sizeof(buf) - 1);
+        if (sz > 0)
+        {
+            buf[sz] = 0;
+            puts(buf);
+        }
+    }
 }
 
 int main(int argc, char **argv)
 {
 
-
     char *filename = "bpf_hello_world_kern";
-    struct bpf_link *links;
-    struct bpf_object *objs;
+    char *progname = "bpf_hello_world";
+    struct bpf_link *link;
+    struct bpf_object *obj;
     struct bpf_program *prog;
 
-    objs = bpf_object__open_file(filename, NULL);
-    if (libbpf_get_error(objs))
+    obj = bpf_object__open_file(filename, NULL);
+    if (libbpf_get_error(obj))
     {
         fprintf(stderr, "opening BPF object file failed\n");
-        objs = NULL;
+        obj = NULL;
         goto cleanup;
     }
 
     /* load BPF program */
-    if (bpf_object__load(objs))
+    if (bpf_object__load(obj))
     {
         fprintf(stderr, "loading BPF object file failed\n");
         goto cleanup;
     }
 
-    bpf_object__for_each_program(prog, objs);
+    prog = bpf_object__find_program_by_name(obj, progname);
+    if (!prog)
     {
-        links = bpf_program__attach(prog);
-        if (libbpf_get_error(links))
-        {
-            fprintf(stderr, "bpf_program__attach failed\n");
-            links = NULL;
-            goto cleanup;
-        }
+        fprintf(stderr, "loading BPF program failed\n");
+        goto cleanup;
+    }
+
+    link = bpf_program__attach(prog);
+    if (libbpf_get_error(link))
+    {
+        fprintf(stderr, "bpf_program__attach failed\n");
+        link = NULL;
+        goto cleanup;
     }
 
     read_trace_pipe();
 
 cleanup:
-    bpf_link__destroy(links);
-    bpf_object__close(objs);
+    bpf_link__destroy(link);
+    bpf_object__close(obj);
     return 0;
 }
