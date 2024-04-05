@@ -1,8 +1,7 @@
 CLANG ?= clang
-WORKSPACE := /home/yoaz/projects/bpf_example
-LIBBPF_OBJ := $(WORKSPACE)/libbpf/lib64/libbpf.a
-LIBBPF_LIB := -L$(WORKSPACE)/libbpf/lib64
-INCLUDES := -I$(WORKSPACE)/libbpf/include -I$(WORKSPACE)/linux-headers/include -I$(WORKSPACE)/src
+LIBBPF_OBJ := $(CURDIR)/libbpf/lib64/libbpf.a
+LIBBPF_LIB := -L$(CURDIR)/libbpf/lib64
+INCLUDES := -I$(CURDIR)/libbpf/include -I$(CURDIR)/linux-headers/include -I$(CURDIR)/src
 CFLAGS := -g -Wall
 ARCH := $(shell uname -m | sed 's/x86_64/x86/')
 OUTPUT := perf_event_out
