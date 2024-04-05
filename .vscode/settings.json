@@ -5,6 +5,11 @@
         "types.h": "c",
         "bpf_common.h": "c",
         "filter.h": "c",
-        "libbpf.h": "c"
+        "libbpf.h": "c",
+        "bpf_core_read.h": "c",
+        "stdlib.h": "c",
+        "perf_event_out_kern.skel.h": "c",
+        "perf_event_out.h": "c",
+        "time.h": "c"
     }
 }

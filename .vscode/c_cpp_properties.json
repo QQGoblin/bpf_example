@@ -3,9 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/home/yoaz/projects/linux-headers/include",
-                "/home/yoaz/projects/libbpf/include"
+                "${workspaceFolder}/linux-headers/include",
+                "${workspaceFolder}/libbpf/include",
+                "${workspaceFolder}/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
